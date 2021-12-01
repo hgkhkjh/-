@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .father {
+        margin: 100px auto;
+        width: 400px;
+        height: 200px;
+        background-color: rgb(255, 245, 227);
+        border-radius: 20px;
+        padding-top: 30px;
+    }
+
+    .father>label {
+        margin: 50px;
+    }
+
+    .r {
+        display: none;
+    }
+
+    .e {
+        display: none;
+    }
+
+    .font {
+        font-size: 12px;
+        color: rgb(240, 128, 128);
+        margin: 0px 30px;
+        visibility: hidden;
+
+    }
+
+    .passspan {
+        font-size: 12px;
+        color: rgb(240, 128, 128);
+        margin: 8px 110px;
+        visibility: hidden
+    }
+
+    .passr {
+        display: none;
+    }
+
+    .passe {
+        display: none;
+    }
+
+    .low {
+        font-size: 10px;
+        display: inline-block;
+        padding: 0px 40px;
+    }
+
+    .center {
+        font-size: 10px;
+        display: inline-block;
+        padding: 0px 30px;
+
+    }
+
+    .strong {
+        font-size: 10px;
+        display: inline-block;
+        padding: 0px 30px;
+    }
+</style>
+
+<body>
+    <form action="" class="father">
+        <label for="">
+            用户名：<input type="text" class="input">
+            <span class="r "> ⭕</span>
+            <span class="e "> ❌</span>
+            <div style="padding: 8px;">
+                <span class="font">只能由数字字母下划线组成，且开头不能是_的6~12位字符串</span>
+            </div>
+        </label>
+        <label for="">
+            密&nbsp;&nbsp;&nbsp;&nbsp;码：<input type="password" class="pass">
+            <span class="passr"> ⭕</span>
+            <span class="passe"> ❌</span>
+            <span class="passspan">密码不能少于8位且不能输入空格</span>
+            <p style="font-size: 10px;margin: 15px; display: inline-block;">密码强度:</p>
+            <span class="low">弱</span>
+            <span class="center">中</span>
+            <span class="strong">强</span>
+        </label>
+    </form>
+</body>
+
+</html>
+
+<script>
+    //用户名需求
+    const ipt = document.querySelector('.input')
+    const right = document.querySelector(".r")
+    const left = document.querySelector(".e")
+    const font = document.querySelector(".font")
+    //定义一个正则 []里面是A-Za-z0-9的一个只占一个字符位 {}是站{}里面的字符位
+    const res = /^[a-zA-Z0-9]\w{5,11}$/
+    ipt.addEventListener('input', function (a) {
+        //如果正则检验是对的就改变他们相应的样式
+        if (res.test(ipt.value)) {
+            right.style.cssText = "display:inline-block;"
+            left.style.cssText = "display: none;"
+            font.style.visibility = "hidden"
+            console.log("正确");
+        }
+        //如果用户删除了输入框里的内容重置样式
+        else if (ipt.value.length == 0) {
+            right.style.cssText = "display:none"
+            left.style.cssText = "display:none;"
+            // visibility:hidden保留原来位置  
+            //display:none不保留原来位置
+            font.style.cssText = "visibility:hidden;"
+
+        }
+        //正则检验不对
+        else {
+            left.style.cssText = "display:inline-block;"
+            right.style.cssText = "display: none;"
+            font.style.cssText = "visibility:visible;"
+            console.log("错误");
+        }
+
+    })
+    //密码需求
+    const passipt = document.querySelector('.pass')
+    const passright = document.querySelector(".passr")
+    const passleft = document.querySelector(".passe")
+    const pass = document.querySelector(".pass")
+    const passspan = document.querySelector(".passspan")
+    const low = document.querySelector(".low")
+    const center = document.querySelector(".center")
+    const strong = document.querySelector(".strong")
+    //设置正则 
+    //数字
+    const res1 = /\d/
+    //字母 i不区分大小写
+    const res2 = /[a-z]/i
+    //特殊符号 []里面只占一位
+    const res3 = /[.@#%^]/
+    //空格
+    const res4 = /\s/
+    // if(pass.value.length)
+    //input监听输入框内容改变
+    pass.addEventListener("input", function () {
+        //当输入框字符串小于8个时给出提示
+        if (pass.value.length <= 8) {
+            passright.style.cssText = "display:none"
+            passleft.style.cssText = "display: inline-block;"
+            passspan.style.cssText = "visibility:visible;"
+            //字符串大于8
+        } else {
+            passleft.style.cssText = "display:none;"
+            passright.style.cssText = "display: inline-block;"
+            passspan.style.visibility = "hidden"
+
+        }
+        //检验输入框有没有空格
+        if (res4.test(passipt.value)) {
+            passright.style.cssText = "display:none"
+            passleft.style.cssText = "display: inline-block;"
+            passspan.style.cssText = "visibility:visible;"
+        }
+        //当用户删除输入框里的内容
+        else if (pass.value.length == 0) {
+            passright.style.cssText = "display:none"
+            passleft.style.cssText = "display:none;"
+            passspan.style.cssText = "visibility:hidden;"
+            low.style.cssText = "background-color:none"
+            center.style.cssText = "background-color:none"
+            strong.style.cssText = "background-color:none"
+        }
+        //定义一个索引用来记录密码的强弱
+        let level = 0
+        //满足第一个正则要求
+        if (res1.test(passipt.value)) {
+            level++
+        }
+        //满足第二个正则要求
+        if (res2.test(passipt.value)) {
+            level++
+        }
+         //满足第三个正则要求
+        if (res3.test(passipt.value)) {
+            level++
+        }
+        console.log(level);
+        //根据level设置样式
+        if (level === 1) {
+            low.style.cssText = "background-color: rgb(250, 171, 171);"
+            center.style.cssText = "background-color:none"
+            strong.style.cssText = "background-color:none"
+
+        } else if (level === 2) {
+            center.style.cssText = "background-color: rgb(233, 185, 122);"
+            strong.style.cssText = "background-color:none"
+
+        }
+        else if (level === 3) {
+            strong.style.cssText = "background-color:darkseagreen"
+        }
+    })
+
+</script>
